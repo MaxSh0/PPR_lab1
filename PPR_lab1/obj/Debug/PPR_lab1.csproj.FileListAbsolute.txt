@@ -1,0 +1,10 @@
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\bin\Debug\PPR_lab1.exe.config
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\bin\Debug\PPR_lab1.exe
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\bin\Debug\PPR_lab1.pdb
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csprojAssemblyReference.cache
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.Form1.resources
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.Properties.Resources.resources
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csproj.GenerateResource.cache
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csproj.CoreCompileInputs.cache
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.exe
+C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.pdb
