@@ -8,3 +8,13 @@ C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csproj.Generate
 C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csproj.CoreCompileInputs.cache
 C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.exe
 C:\Users\mshak\source\repos\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.pdb
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\bin\Debug\PPR_lab1.exe.config
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\bin\Debug\PPR_lab1.exe
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\bin\Debug\PPR_lab1.pdb
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.Form1.resources
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.Properties.Resources.resources
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csproj.GenerateResource.Cache
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csproj.CoreCompileInputs.cache
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.exe
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.pdb
+C:\Users\mshak_000\Desktop\PPR_lab1\PPR_lab1\PPR_lab1\obj\Debug\PPR_lab1.csprojResolveAssemblyReference.cache

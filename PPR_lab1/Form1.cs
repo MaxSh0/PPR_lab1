@@ -12,60 +12,54 @@ namespace PPR_lab1
 {
     public partial class Form1 : Form
     {
-
-        
-        
-       
         public Form1()
         {
             InitializeComponent();
+            dataGridView1.Visible = false;
+            dataGridView.Width = 670;
+            ColumnValue.Value = 1;
+            RowValue.Value = 1;
         }
 
         //Кнопка решить
         private void button1_Click(object sender, EventArgs e)
         {
-            double[,] matrix = new double[2, 3];//[Convert.ToInt32(ColumnValue.Value), Convert.ToInt32(RowValue.Value)];
-            Table_in_matrix(matrix);
-            Answer.Text = MM(matrix);
+            double[,] matrix = new double [Convert.ToInt32(RowValue.Value),Convert.ToInt32(ColumnValue.Value)];
+            if (!error())
+            {
+                Table_in_matrix(matrix);
+                if (radioButtonMM.Checked)
+                {
+                    Answer.Text = MM(matrix);
+                }
+                else if (radioButtonBL.Checked)
+                {
+                    Answer.Text = BL(matrix);
+                }
+            }
         }
 
         //Метод выбора с использованием Минимаксного критерия
         string MM(double[,] matrix)
         {
-            double cur_val;
             double[] arr_max;
             arr_max = min(matrix);
-            double max = arr_max[0];
-            for (int i = 0; i < arr_max.Length; i++)
-            {
-                cur_val = arr_max[i];
-                if (max < cur_val)
-                {
-                    max = cur_val;
-                }
-            }
-            return max.ToString();
+
+            return max(arr_max).ToString();
         }
-
-
-
-
-
-
-
 
         //возвращает массив наименьших элементов в строках 2D массива
         double[] min(double[,] matrix)
         {
             double[] arr_min = new double[matrix.GetLength(0)];
-            for (int n = 0; n < matrix.GetLength(0); n++)
+            for (int n = 0; n < Convert.ToInt32(RowValue.Value); n++)
             {
-                arr_min[n] = matrix[0, n];
+                arr_min[n] = matrix[n, 0];
             }
             double cur_val;
-            for (int i = 0; i < matrix.GetLength(0); i++)
+            for (int i = 0; i < Convert.ToInt32(RowValue.Value); i++)
             {
-                for (int j = 0; j < matrix.GetLength(1); j++)
+                for (int j = 0; j < Convert.ToInt32(ColumnValue.Value); j++)
                 {
                     cur_val = matrix[i, j];
                     if (cur_val < arr_min[i])
@@ -77,23 +71,53 @@ namespace PPR_lab1
             return arr_min;
         }
 
+
+        // критерий Байерса-Лапласа
+        string BL(double[,] matrix)
+        {
+            double[] arr_additionally = new double[Convert.ToInt32(RowValue.Value)];
+            matrix = Table_in_matrix(matrix);
+            double calculated_column_value = 0;
+            for (int i = 0; i < RowValue.Value; i++)
+            {
+                for (int j = 0; j < ColumnValue.Value; j++)
+                {
+                    calculated_column_value += matrix[i, j] * Convert.ToDouble(dataGridView1[0, j].Value); 
+                }
+                arr_additionally[i] = calculated_column_value;
+                calculated_column_value = 0;
+            }
+            return max(arr_additionally).ToString();
+        }
+
+
         // преобразует таблицу в 2D массив
         double[,] Table_in_matrix(double[,] matrix)
         {
-            //matrix =(double[,]) ResizeArray(matrix, new int[] { Convert.ToInt32(ColumnValue.Value),Convert.ToInt32(RowValue.Value)});
-            for (int i = 0; i < dataGridView.ColumnCount; i++)
+            for (int i = 0; i < Convert.ToInt32(RowValue.Value); i++)
             {
-                for (int j = 0; j < dataGridView.RowCount; j++)
+                for (int j = 0; j < Convert.ToInt32(ColumnValue.Value); j++)
                 {
-                    matrix[i, j] =Convert.ToDouble(dataGridView[i, j].Value);
+                    matrix[i, j] = Convert.ToDouble(dataGridView[j, i].Value);
                 }
             }
             return matrix;
         }
 
-        private void tableLayoutPanel1_Paint(object sender, PaintEventArgs e)
+        // возвращает максимальное значение в одномерном массиве
+        double max(double[] arr)
         {
-
+            double cur_val;
+            double max = arr[0];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                cur_val = arr[i];
+                if (max < cur_val)
+                {
+                    max = cur_val;
+                }
+            }
+            return max;
         }
 
         //Изменение кол-ва столбцов в таблице
@@ -101,6 +125,8 @@ namespace PPR_lab1
         {
             dataGridView.ColumnCount = Convert.ToInt32(ColumnValue.Value);
             dataGridView.Columns[Convert.ToInt32(ColumnValue.Value) - 1].HeaderText = "F" + ColumnValue.Value.ToString();
+            dataGridView1.RowCount = Convert.ToInt32(ColumnValue.Value);
+            dataGridView1.Rows[Convert.ToInt32(ColumnValue.Value) - 1].HeaderCell.Value = "e" + ColumnValue.Value.ToString();
         }
 
         //Изменение кол-ва строк в таблице
@@ -130,21 +156,46 @@ namespace PPR_lab1
             dataGridView[1, 2].Value = 9;
             dataGridView[2, 2].Value = -1;
 
+            dataGridView1[0, 0].Value = 0.5;
+            dataGridView1[0, 1].Value = 0.3;
+            dataGridView1[0, 2].Value = 0.2;
+
         }
 
-
-
-        public static Array ResizeArray(Array arr, int[] newSizes)
+        //Видимости при режиме MM
+        private void radioButtonMM_CheckedChanged(object sender, EventArgs e)
         {
-            if (newSizes.Length != arr.Rank)
-                throw new ArgumentException("arr must have the same number of dimensions " +
-                                            "as there are elements in newSizes", "newSizes");
-
-            var temp = Array.CreateInstance(arr.GetType().GetElementType(), newSizes);
-            int length = arr.Length <= temp.Length ? arr.Length : temp.Length;
-            Array.ConstrainedCopy(arr, 0, temp, 0, length);
-            return temp;
+            if (radioButtonMM.Checked)
+            {
+                dataGridView1.Visible = false;
+                dataGridView.Width = 670;
+            }
         }
 
+        //Видимости при режиме BL
+        private void radioButtonBL_CheckedChanged(object sender, EventArgs e)
+        {
+            if (radioButtonBL.Checked)
+            {
+                dataGridView1.Visible = true;
+                dataGridView.Width = 519;
+            }
+        }
+
+        //Проверка на ошибки
+        bool error()
+        {
+            double summBL = 0;
+            for (int i = 0; i < Convert.ToInt32(ColumnValue.Value); i++)
+            {
+                summBL += Convert.ToDouble(dataGridView1[0, i].Value);
+            }
+            if (Math.Round(summBL,3) != 1)
+            {
+                MessageBox.Show("При использоании Критерия Байеса-Лапласа сумма вероятностей должна быть равна 1", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return true;
+            }
+            return false;
+        }
     }
 }
