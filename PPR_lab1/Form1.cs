@@ -25,7 +25,7 @@ namespace PPR_lab1
             RowValue.Value = 1;
            
         }
-
+        bool decided = false;
         //Кнопка решить
         private void button1_Click(object sender, EventArgs e)
         { 
@@ -49,6 +49,11 @@ namespace PPR_lab1
                 {
                     Answer.Text = HL(matrix);
                 }
+                else if (radioButtonSe.Checked)
+                {
+                    Answer.Text = Se(matrix);
+                }
+                decided = true;
             }
         }
 
@@ -57,7 +62,7 @@ namespace PPR_lab1
         {
             double[] arr_max;
             arr_max = min_2D(matrix);
-           //AdditionalCollumn(arr_max);
+            AdditionalCollumn(arr_max);
 
             return max_1D(arr_max).ToString();
         }
@@ -77,6 +82,7 @@ namespace PPR_lab1
                 arr_additionally[i] = calculated_column_value;
                 calculated_column_value = 0;
             }
+            AdditionalCollumn(arr_additionally);
             return max_1D(arr_additionally).ToString();
         }
 
@@ -91,6 +97,7 @@ namespace PPR_lab1
             {
                 arr_result[i] = arr_min[i] * Convert.ToDouble(numС.Value) + arr_max[i] * (1 - Convert.ToDouble(numС.Value));
             }
+            AdditionalCollumn(arr_result);
             return max_1D(arr_result).ToString();
         }
 
@@ -112,7 +119,43 @@ namespace PPR_lab1
                 arr_result[i] = arr_min[i] * Convert.ToDouble(numHL.Value) + (valueInRow*(1-Convert.ToDouble(numHL.Value)));
                 valueInRow = 0;
             }
+            AdditionalCollumn(arr_result);
             return max_1D(arr_result).ToString();
+        }
+
+        string Se(double[,] matrix)
+        {
+            matrix = Table_in_matrix(matrix);
+            double[] arr_max_row = maxInRow_2D(matrix);
+            for (int i = 0; i < ColumnValue.Value; i++)
+            {
+                for (int j = 0; j < RowValue.Value; j++)
+                {
+                    matrix[j, i] = arr_max_row[i] - matrix[j, i];
+                }
+            }
+            double[] arr_max = max_2D(matrix);
+            AdditionalCollumn(arr_max);
+            return min_1D(arr_max).ToString();
+        }
+
+        //возвращает массив наибольших элементов в столбцах 2D массива построчно
+        double[] maxInRow_2D(double[,] matrix)
+        {
+            double[] arr_max = new double[matrix.GetLength(0)];
+            double cur_val;
+            for (int i = 0; i < Convert.ToInt32(ColumnValue.Value); i++)
+            {
+                for (int j = 0; j < Convert.ToInt32(RowValue.Value); j++)
+                {
+                    cur_val = matrix[j, i];
+                    if (cur_val > arr_max[i])
+                    {
+                        arr_max[i] = cur_val;
+                    }
+                }
+            }
+            return arr_max;
         }
 
         //возвращает массив наименьших элементов в строках 2D массива построчно
@@ -190,9 +233,26 @@ namespace PPR_lab1
             return max;
         }
 
+        // возвращает минимальное значение в одномерном массиве
+        double min_1D(double[] arr)
+        {
+            double cur_val;
+            double min = arr[0];
+            for (int i = 0; i < arr.Length; i++)
+            {
+                cur_val = arr[i];
+                if (min > cur_val)
+                {
+                    min = cur_val;
+                }
+            }
+            return min;
+        }
+
         //Изменение кол-ва столбцов в таблице
         private void ColumnValue_ValueChanged(object sender, EventArgs e)
         {
+            decided = false;
             dataGridView.ColumnCount = Convert.ToInt32(ColumnValue.Value);
             dataGridView.Columns[Convert.ToInt32(ColumnValue.Value) - 1].HeaderText = "F" + ColumnValue.Value.ToString();
             dataGridView1.RowCount = Convert.ToInt32(ColumnValue.Value);
@@ -202,17 +262,21 @@ namespace PPR_lab1
         //Добавить столбец с доп значениями
         void AdditionalCollumn(double[] arr)
         {
-            dataGridView.ColumnCount += 1;
-            dataGridView.Columns[Convert.ToInt32(ColumnValue.Value)].HeaderText = "Доп столбец";
-            for (int i = 0; i < dataGridView.RowCount; i++)
+            if (!decided)
             {
-                dataGridView[dataGridView.RowCount,i].Value = arr[i];
+                dataGridView.ColumnCount += 1;
+                dataGridView.Columns[Convert.ToInt32(ColumnValue.Value)].HeaderText = "Доп столбец";
+                for (int i = 0; i < RowValue.Value; i++)
+                {
+                    dataGridView[Convert.ToInt32(ColumnValue.Value),i].Value = arr[i];
+                }
             }
         }
 
         //Изменение кол-ва строк в таблице
         private void RowValue_ValueChanged(object sender, EventArgs e)
-        {   
+        {
+            decided = false;
             dataGridView.RowCount = Convert.ToInt32(RowValue.Value);
             dataGridView.Rows[Convert.ToInt32(RowValue.Value) - 1].HeaderCell.Value = "E" + RowValue.Value.ToString();
         }
@@ -221,6 +285,11 @@ namespace PPR_lab1
         //Видимости при режиме MM
         private void radioButtonMM_CheckedChanged(object sender, EventArgs e)
         {
+            if (decided)
+            {
+                dataGridView.ColumnCount -= 1;
+            }
+            decided = false;
             if (radioButtonMM.Checked)
             {
                 dataGridView1.Visible = false;
@@ -235,6 +304,11 @@ namespace PPR_lab1
         //Видимости при режиме BL
         private void radioButtonBL_CheckedChanged(object sender, EventArgs e)
         {
+            if (decided)
+            {
+                dataGridView.ColumnCount -= 1;
+            }
+            decided = false;
             if (radioButtonBL.Checked)
             {
                 dataGridView1.Visible = true;
@@ -249,6 +323,11 @@ namespace PPR_lab1
         //Видимости при режиме Gy
         private void radioButtonGy_CheckedChanged(object sender, EventArgs e)
         {
+            if (decided)
+            {
+                dataGridView.ColumnCount -= 1;
+            }
+            decided = false;
             if (radioButtonGy.Checked)
             {
                 dataGridView1.Visible = false;
@@ -264,6 +343,11 @@ namespace PPR_lab1
         //Видимости при режиме HL
         private void radioButtonHL_CheckedChanged(object sender, EventArgs e)
         {
+            if (decided)
+            {
+                dataGridView.ColumnCount -= 1;
+            }
+            decided = false;
             if (radioButtonHL.Checked)
             {
                 dataGridView1.Visible = false;
@@ -304,6 +388,7 @@ namespace PPR_lab1
         //кнопка ЗАДАЧА 1
         private void button1_Click_1(object sender, EventArgs e)
         {
+            decided = false;
             Answer.Clear();
             ColumnValue.Value = 1;
             RowValue.Value = 1;
@@ -333,6 +418,7 @@ namespace PPR_lab1
         //кнопка ЗАДАЧА 2
         private void button2_Click(object sender, EventArgs e)
         {
+            decided = false;
             Answer.Clear();
             ColumnValue.Value = 1;
             RowValue.Value = 1;
@@ -362,6 +448,7 @@ namespace PPR_lab1
         //кнопка ЗАДАЧА 3
         private void button3_Click(object sender, EventArgs e)
         {
+            decided = false;
             Answer.Clear();
             ColumnValue.Value = 1;
             RowValue.Value = 1;
@@ -391,6 +478,7 @@ namespace PPR_lab1
         //кнопка ЗАДАЧА 4
         private void button4_Click(object sender, EventArgs e)
         {
+            decided = false;
             Answer.Clear();
             ColumnValue.Value = 1;
             RowValue.Value = 1;
